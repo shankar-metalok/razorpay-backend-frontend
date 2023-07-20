@@ -9,7 +9,9 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
+  
   res.send("This is from the server.");
+
 });
 
 app.post("/payment", async (req, res) => {

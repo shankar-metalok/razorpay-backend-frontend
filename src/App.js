@@ -3,20 +3,27 @@ import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-import './App.css'
+import "./App.css";
+import "./order.css";
 
 const RazorpayPaymentButton = () => {
   const [data, setData] = useState("");
+
   const [orders, setOrders] = useState(false);
+
   const rzpButtonRef = useRef(null);
 
   const [payment_id, setpayment_id] = useState("");
+
   const [razorpay_signature, setrazorpay_signature] = useState("");
 
-  const [itemamount, setitemamount] = useState('');
+  const [itemamount, setitemamount] = useState("");
 
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const [selectimage, setselectimage] = useState("");
+
+  const [addedcart, setaddedcart] = useState([]);
 
   const eventchange = (e) => {
     setitemamount(e.target.value);
@@ -70,6 +77,8 @@ const RazorpayPaymentButton = () => {
           // alert(response.razorpay_order_id);
           // alert(response.razorpay_signature);
 
+          console.log("razorpay orderrrrrrrrrrrrrrrrrrrrrrdata", response);
+
           setpayment_id(response.razorpay_payment_id);
 
           setrazorpay_signature(response.razorpay_signature);
@@ -86,7 +95,6 @@ const RazorpayPaymentButton = () => {
 
   const orderClick = (each) => {
     setOrders(true);
-
   };
   const timestamp = data.created_at;
   const date = new Date(timestamp * 1000); // Convert to milliseconds
@@ -97,8 +105,8 @@ const RazorpayPaymentButton = () => {
 
   const [fooddata, setfooddata] = useState("");
 
-console.log('order dataaaaaaaaaaaaaa', data)
-  
+  console.log("order dataaaaaaaaaaaaaa", data);
+
   //----------------------------------------------- cart
 
   const YOUR_APP_ID = "82e453da";
@@ -119,97 +127,105 @@ console.log('order dataaaaaaaaaaaaaa', data)
 
   //------------------------------------------------- end cart
 
-
-
   const Foodfun = (each, index) => {
-
-
-
-
-    const orderClick = (item,index) => {
-
-      setitemamount(item.index + 150)
+    const orderClick = (item, index) => {
+      setitemamount(item.index + 150);
       setOrders(true);
       // console.log('chosed item', item)
-      setSelectedItem(item.each.recipe.label)
-      
+      setSelectedItem(item.each.recipe.label);
+      setselectimage(item.each.recipe.image);
     };
 
-
-
-  
     return (
       <div className="col-md-4 text-center">
         <img src={each.each.recipe.image} alt="" />
         <h6 className="text-center">{each.each.recipe.label}</h6>
         <div className="d-flex align-items-center justify-content-center gap-3 mt-2 mb-5">
-          <h3 >{150 + each.index} Rs</h3>
-         
-          <h3 onClick={()=>orderClick(each)} className="btn btn-primary">buy now</h3>
+          <h3>{150 + each.index} Rs</h3>
+
+          <h5
+            className="btn btn-success"
+            onClick={() => {
+              addcart(each);
+            }}
+          >
+            add cart
+          </h5>
         </div>
       </div>
     );
   };
 
+  const close = () => {
+    setOrders(false);
 
+    // console.log("hellllllllloooooo");
+  };
 
+  if (payment_id !== "") {
+    setTimeout(() => {
+      setOrders(false);
+    }, 3000);
+  }
 
+  console.log("payyyyyyyyyyyyyyyyyyyyyyyyyment", payment_id);
 
+  // -----------------------------------------add to cart section
 
-const close = () =>{
-  setOrders(false);
+  const addcart = (each, index) => {
+    setaddedcart([...addedcart, each]);
+  };
 
-  console.log('hellllllllloooooo')
-}
+  console.log("addedcart data", addedcart);
 
-
-
-
-
-
-
-
-
-
-
-
-
+  // ------------------------------------------add to cart section end
 
   return (
     <div className="container">
+      <div className="payment-btns" style={{ display: orders ? "" : "none" }}>
+        <h1 className="close-btn" onClick={close}>
+          X
+        </h1>
+        <img src={selectimage} width={150} alt="" />
+        <h4>{selectedItem}</h4>
+        <h4>order amount: {itemamount} Rs </h4>
+        <h4 className="btn btn-success pl-5" ref={rzpButtonRef}>
+          Make Payment
+        </h4>
 
-
-
-        <div  className="payment-btns" style={{ display: orders ? "" : "none" }}> 
-            <h1 className="close-btn"  onClick={close}>X</h1>
-            <h4>{selectedItem}</h4>
-            <h4>order amount: {itemamount} Rs </h4>
-            <h4 className="btn btn-success pl-5" ref={rzpButtonRef} >Make Payment</h4>
-
-
-            <div style={{ display: orders ? "block" : "none" }}>
-               <h1 style={{ display:payment_id ? 'block' : 'none' }} > thank you</h1>
-               <h5 style={{ display:payment_id ? 'block' : 'none' }}>  order id:- {razorpay_signature}</h5>
-               <h6 style={{ display:payment_id ? 'block' : 'none' }}>  date of donate : {day} {month} {year} </h6>
-           </div>
+        <div style={{ display: orders ? "block" : "none" }}>
+          <h1 style={{ display: payment_id ? "block" : "none" }}> thank you</h1>
+          <h5 style={{ display: payment_id ? "block" : "none" }}>
+            {" "}
+            order id:- {razorpay_signature}
+          </h5>
+          <h6 style={{ display: payment_id ? "block" : "none" }}>
+            {" "}
+            date of order: {day} {month} {year}{" "}
+          </h6>
         </div>
+      </div>
 
 
 
 
-
-
-     <div className="d-flex gap-3 justify-content-center mt-4">
-      <input type="number" value={itemamount} onChange={eventchange}style={{ display: orders ? "none" : "block" }} />
-        <h3 onClick={orderClick} className="btn btn-outline-primary p-2" style={{ display: orders ? "none" : "block" }}>order now</h3>
-
-       
-
-     </div>
-    
+      <div className="d-flex gap-3 justify-content-center mt-4">
+        <input
+          type="number"
+          value={itemamount}
+          onChange={eventchange}
+          style={{ display: orders ? "none" : "block" }}
+        />
+        <h3
+          onClick={orderClick}
+          className="btn btn-outline-primary p-2"
+          style={{ display: orders ? "none" : "block" }}
+        >
+          order now
+        </h3>
+      </div>
 
       <div></div>
-
 
       <div className="row">
         {fooddata !== "" &&
@@ -217,6 +233,60 @@ const close = () =>{
             <Foodfun each={each} key={index} index={index} />
           ))}
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div className="added-cart">
+
+          
+        {
+          addedcart.map((each,index)=>(
+            
+            <div>
+
+              <h3 onClick={orderClick} className="btn btn-primary">
+                buy now
+              </h3>
+              
+            </div>
+
+          )
+
+          )
+        }
+
+      
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 };
