@@ -19,3 +19,17 @@
   top:20px;
   z-index: 200;
 }
+a{
+  text-decoration: none;
+}
+.items-added{
+  color: green;
+  border:1px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+}
