@@ -25,10 +25,8 @@ const Addedcart = ({ addeddata, Delfun }) => {
 
 const delclick = (delparam) =>{
  
-
     Delfun(delparam)
 
-    
 }
 
 

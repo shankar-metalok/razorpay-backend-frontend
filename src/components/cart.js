@@ -15,15 +15,29 @@ const Cart = () => {
   const [selectimage, setselectimage] = useState("");
   const [addedcart, setaddedcart] = useState([]);
 
-
   const eventchange = (e) => {
     setitemamount(e.target.value);
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     rzpButtonRef.current.onclick = async function (e) {
       e.preventDefault();
-
       const response = await fetch("http://localhost:3001/payment", {
         method: "POST",
         headers: {
@@ -33,7 +47,6 @@ const Cart = () => {
           amount: itemamount * 100,
         }),
       });
-
       if (response.ok) {
         const responseData = await response.json();
         // console.log("response data", responseData.order);
@@ -83,6 +96,22 @@ const Cart = () => {
       rzp1.open();
     }
   }, [data, itemamount]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const orderClick = (each) => {
     setOrders(true);
@@ -136,9 +165,6 @@ const Cart = () => {
           <h3 onClick={() => orderClick(each)} className="btn btn-primary">
             buy now
           </h3>
-          {/* <h5 className="btn btn-success" onClick={() => { addcart(each);}} >
-            add cart
-          </h5> */}
         </div>
       </div>
     );
@@ -194,22 +220,6 @@ const Cart = () => {
         </div>
       </div>
 
-      {/* <div className="d-flex gap-3 justify-content-center mt-4">
-        <input
-          type="number"
-          value={itemamount}
-          onChange={eventchange}
-          style={{ display: orders ? "none" : "block" }}
-        />
-        <h3
-          onClick={orderClick}
-          className="btn btn-outline-primary p-2"
-          style={{ display: orders ? "none" : "block" }}
-        >
-          order now
-        </h3>
-      </div> */}
-
       <div></div>
 
       <div className="row">
@@ -218,8 +228,6 @@ const Cart = () => {
             <Foodfun each={each} key={index} index={index} />
           ))}
       </div>
-
-      
     </div>
   );
 };
