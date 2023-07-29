@@ -48,7 +48,7 @@ const Home = ({addedcart,Addedfun}) => {
 
     return (
       <div className="col-md-4 text-center">
-        <img src={each.each.recipe.image} alt="" />
+        <img src={each.each.recipe.image} alt=""/>
         <h6 className="text-center">{each.each.recipe.label}</h6>
         <div className="d-flex align-items-center justify-content-center gap-3 mt-2 mb-5">
           <h3>{each.each.recipe.totalWeight.toFixed(0)} Rs</h3>

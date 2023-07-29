@@ -23,7 +23,7 @@ const Cart = () => {
 
 
 
-
+console.log('ddddddddddddddddddddddddddddddddddddaaaaaaaaaa',data)
 
 
 
@@ -58,6 +58,14 @@ const Cart = () => {
       } else {
         console.error("Error:", response.status);
       }
+
+
+
+
+
+
+
+
 
       // let orderData = data;
     };
@@ -98,6 +106,40 @@ const Cart = () => {
   }, [data, itemamount]);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+const senddb = () =>{
+  fetch("http://localhost:3005/api/post-example", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((newdata) => {
+        console.log(newdata);
+        // You can handle the response from the server here
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Handle any errors that occurred during the request
+      });
+}
+if(data!==''){
+  senddb()
+}
 
 
 
