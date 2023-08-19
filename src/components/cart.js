@@ -19,32 +19,23 @@ const Cart = () => {
     setitemamount(e.target.value);
   };
 
-
-
-
-
-console.log('ddddddddddddddddddddddddddddddddddddaaaaaaaaaa',data)
-
-
-
-
-
-
-
-
-
-
+  console.log("ddddddddddddddddddddddddddddddddddddaaaaaaaaaa", data);
 
   useEffect(() => {
     rzpButtonRef.current.onclick = async function (e) {
       e.preventDefault();
-      const response = await fetch("http://localhost:3001/payment", {
+      const response = await fetch("http://localhost:5002/payment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           amount: itemamount * 100,
+
+          notes: {
+            order_name: selectedItem,
+            image: selectimage,
+          },
         }),
       });
       if (response.ok) {
@@ -58,14 +49,6 @@ console.log('ddddddddddddddddddddddddddddddddddddaaaaaaaaaa',data)
       } else {
         console.error("Error:", response.status);
       }
-
-
-
-
-
-
-
-
 
       // let orderData = data;
     };
@@ -105,55 +88,25 @@ console.log('ddddddddddddddddddddddddddddddddddddaaaaaaaaaa',data)
     }
   }, [data, itemamount]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const senddb = () =>{
-  fetch("http://localhost:3005/api/post-example", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((newdata) => {
-        console.log(newdata);
-        // You can handle the response from the server here
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        // Handle any errors that occurred during the request
-      });
-}
-if(data!==''){
-  senddb()
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // const senddb = () =>{
+  //   fetch("http://localhost:3005/api/post-example", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(data),s
+  //     })
+  //       .then((response) => response.json())
+  //       .then((newdata) => {
+  //         console.log(newdata);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //       });
+  // }
+  // if(data!==''){
+  //   senddb()
+  // }
 
   const orderClick = (each) => {
     setOrders(true);

@@ -11,6 +11,8 @@ import Addedcart from './components/addedcart';
 
 import { Provider } from 'react-redux';
 import store from './redux/store'
+import Demorazorpay from './components/demorazorpay'
+import Fromdb from './components/databaseallordersdata'
 
 const App = () => {
   return (
@@ -22,7 +24,10 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/addedcart' element={<Addedcart/>}/>
+        <Route path='/demorazorpay' element={<Demorazorpay/>}/>
 
+
+        <Route path='/databaseallordersdata' element={<Fromdb/>}/>
       </Routes>
    
    </BrowserRouter>

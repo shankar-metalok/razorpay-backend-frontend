@@ -4,13 +4,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-const port = 3001;
+const port = 5002;
 
 app.use(express.json());
 app.use(cors());
 
-// Connect to MongoDB
-const mongoUrl = "mongodb://localhost:27017/razorpay-order-data";
+const mongoUrl =
+  "mongodb+srv://shankarmeta2:shankarmeta2@test123.ohcscry.mongodb.net/?retryWrites=true&w=majority";
+
 mongoose
   .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -20,7 +21,6 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-// Create Mongoose schema for the order
 const orderSchema = new mongoose.Schema({
   id: String,
   entity: String,
@@ -42,36 +42,34 @@ app.get("/", (req, res) => {
   res.send("This is from the server.");
 });
 
+
+
+
+
+
+
+
+
+
+
 app.post("/payment", async (req, res) => {
   const instance = new Razorpay({
     key_id: "rzp_test_AsieLfVYqPqP2J",
     key_secret: "J7fiHt2fuHkANZ5zBGUl7Ueh",
   });
 
-  const { amount } = req.body;
-
   try {
+    const { amount, notes } = req.body;
+
     const order = await instance.orders.create({
       amount: amount,
       currency: "INR",
       receipt: "order1234",
     });
 
-
-    // Save the order data to MongoDB
     const newOrder = new Order({
-      id: order.id,
-      entity: order.entity,
-      amount: order.amount,
-      amount_paid: order.amount_paid,
-      amount_due: order.amount_due,
-      currency: order.currency,
-      receipt: order.receipt,
-      offer_id: order.offer_id,
-      status: order.status,
-      attempts: order.attempts,
-      notes: order.notes,
-      created_at: order.created_at,
+      ...order,
+      notes: notes,
     });
 
     await newOrder.save();
